@@ -52,7 +52,8 @@ class BookTableViewController: UITableViewController {
 					if let title = object["title"] as? String,
 						let szImageUrl = object["imageURL"] as? String,
 						let imageURL = NSURL(string: szImageUrl) {
-						books.append(Book(title: title, imageUrl: imageURL))
+						let author = object["author"] as? String 
+						books.append(Book(title: title, imageUrl: imageURL, author: author))
 					}
 				}
 				// Update UI on main thread
@@ -83,7 +84,9 @@ class BookTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let _cell = tableView.dequeueReusableCellWithIdentifier("bookCell", forIndexPath: indexPath)
+		let book = books[indexPath.row]
+		let identifier = (book.author != nil) ? "bookCell" : "bookCellNoAuthor"
+        let _cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
 
 		if let cell = _cell as? BookCell {
 			cell.loadBook( books[indexPath.row] )

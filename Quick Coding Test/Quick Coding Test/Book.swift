@@ -11,4 +11,5 @@ import Foundation
 struct Book {
 	let title: String
 	let imageUrl: NSURL
+	let author: String?
 }

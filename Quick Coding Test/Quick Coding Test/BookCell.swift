@@ -14,6 +14,7 @@ class BookCell: UITableViewCell {
 	
 	@IBOutlet weak var spinnerView: UIActivityIndicatorView!
 	@IBOutlet weak var titleLabel: UILabel!
+	@IBOutlet weak var authorLabel: UILabel?
 	@IBOutlet weak var thumbView: UIImageView!
 	
 	var dataTask: NSURLSessionDataTask?
@@ -25,7 +26,10 @@ class BookCell: UITableViewCell {
 	
 	
 	func loadBook(book: Book) {
+		// Update Labels
 		titleLabel.text = book.title
+		authorLabel?.text = book.author
+		
 		var localTask: NSURLSessionDataTask? = nil
 
 		// Kick off data task to download thumbnail
@@ -59,6 +63,7 @@ class BookCell: UITableViewCell {
 		// reset cell state
 		spinnerView.hidden = false
 		titleLabel.text = ""
+		authorLabel?.text = ""
 		thumbView.image = nil
 		
 		dataTask?.cancel()
