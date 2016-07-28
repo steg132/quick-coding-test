@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+
 class BookCell: UITableViewCell {
 	
 	@IBOutlet weak var spinnerView: UIActivityIndicatorView!
@@ -24,7 +26,8 @@ class BookCell: UITableViewCell {
 	
 	func loadBook(book: Book) {
 		titleLabel.text = book.title
-		
+		var localTask: NSURLSessionDataTask? = nil
+
 		// Kick off data task to download thumbnail
 		self.dataTask = NSURLSession.sharedSession().dataTaskWithURL(book.imageUrl)
 		{ (_data, response, error) in
@@ -42,10 +45,15 @@ class BookCell: UITableViewCell {
 			// GO to main thread to update UI
 			dispatch_async(dispatch_get_main_queue(),
 			               {
-							// Chack if request was canceled again?
-							self.thumbView.image = image
+							// check if the task has changed
+							if self.dataTask == localTask {
+								self.thumbView.image = image
+							}
 			})
 		}
+		dataTask?.resume()
+		localTask = dataTask
+
 	}
 	override func prepareForReuse() {
 		// reset cell state
